@@ -2,14 +2,16 @@
 //        - `(?:[\s\r\n]|\\r|\\n)*` matches spaces/newlines
 //        - `\\?"` matches quotation marks
 
-// Note this looks for the pattern `AudioClip.play("id")`. Will not match `AudioClip.play("local::resourceId.contentId")` or `AudioClip.play(Random.choice(...), ...)`
-const FIXABLE_LAYER_FRONT_PROPERTY = /\W(layer(?:[\s\r\n]|\\r|\\n)*:(?:[\s\r\n]|\\r|\\n)*)(\\?"front\\?")/g;
-const FIXABLE_LAYER_BACK_PROPERTY = /\W(layer(?:[\s\r\n]|\\r|\\n)*:(?:[\s\r\n]|\\r|\\n)*)(\\?"back\\?")/g; // didn't work but fix anyways lol
-const FIXABLE_LAYER_BEHIND_PROPERTY = /\W(layer(?:[\s\r\n]|\\r|\\n)*:(?:[\s\r\n]|\\r|\\n)*)(\\?"behind\\?")/g;
-const HAS_OTHER_LAYER_PROPERTY = /\W(layer(?:[\s\r\n]|\\r|\\n)*:(?:[\s\r\n]|\\r|\\n)*)(\\?".*?\\?")/g;
+// Note this looks for the pattern `layer: "front"` (or `"back"` or `"behind"` or some other string)
+// Even though `layer: "back"` didn't work, will fix if exists
+// Also will capture fixed ones: i.e. `layer: VfxLayer.LAYER_NAME` so that they do not get marked for manual correction
+const FIXABLE_LAYER_FRONT_PROPERTY = /(\Wlayer(?:[\s\r\n]|\\r|\\n)*:(?:[\s\r\n]|\\r|\\n)*)(\\?"front\\?")/g;
+const FIXABLE_LAYER_BACK_PROPERTY = /(\Wlayer(?:[\s\r\n]|\\r|\\n)*:(?:[\s\r\n]|\\r|\\n)*)(\\?"back\\?")/g;
+const FIXABLE_LAYER_BEHIND_PROPERTY = /(\Wlayer(?:[\s\r\n]|\\r|\\n)*:(?:[\s\r\n]|\\r|\\n)*)(\\?"behind\\?")/g;
+const HAS_OTHER_LAYER_PROPERTY = /(\Wlayer(?:[\s\r\n]|\\r|\\n)*:(?:[\s\r\n]|\\r|\\n)*)(\\?".*?\\?")/g;
 
-const HAS_LAYER_MATCHER = /layer:/g;
-const HAS_GOOD_LAYER_PROPERTY = /\W(layer(?:[\s\r\n]|\\r|\\n)*:(?:[\s\r\n]|\\r|\\n)*)(VfxLayer\.(?:BACKGROUND_BEHIND|BACKGROUND_STRUCTURES|BACKGROUND_SHADOWS|BACKGROUND_EFFECTS|CHARACTERS_BACK|CHARACTERS|CHARACTERS_FRONT|FOREGROUND_STRUCTURES|FOREGROUND_SHADOWS|FOREGROUND_EFFECTS|FOREGROUND_FRONT))/g;
+const HAS_LAYER_MATCHER = /\Wlayer:/g;
+const HAS_GOOD_LAYER_PROPERTY = /(\Wlayer(?:[\s\r\n]|\\r|\\n)*:(?:[\s\r\n]|\\r|\\n)*)(VfxLayer\.(?:BACKGROUND_BEHIND|BACKGROUND_STRUCTURES|BACKGROUND_SHADOWS|BACKGROUND_EFFECTS|CHARACTERS_BACK|CHARACTERS|CHARACTERS_FRONT|FOREGROUND_STRUCTURES|FOREGROUND_SHADOWS|FOREGROUND_EFFECTS|FOREGROUND_FRONT))/g;
 
 function isEntityOrHScript(fhandle) {
     const is_entity = fhandle.name.endsWith(".entity");
