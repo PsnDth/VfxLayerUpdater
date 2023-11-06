@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vfx Layer Updater</title>
+    <!--Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poiret+One|Raleway:400,300,600,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- Styles and script-->
+    <link rel="stylesheet" href="main.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <h1>Fix Vfx layer property!</h1>
+    <p class="desc">
+    Will fix all <code>VfxStats({layer: "front"}, ...)</code> and convert to the new  <code>VfxStats({layer: VfxLayer.CHARACTERS_FRONT}, ...)</code> format.  Any layer string that would not have worked will get commented out. Can either drag the folder onto the button or click it to choose the project folder.
+    <br><br><i>After selecting, this modifies your project directory!! Be sure to back it up first!</i>
+    </p>
+    <button id="start_process">Put Fraytools Folder Here</button>
+    <p class="desc" id="result"></p>
+</body>
+</html>
